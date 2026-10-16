@@ -1,0 +1,20 @@
+u{% extends "base.html" %}
+{% block title %}Ripoti za mauzo{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">Mapato na miamala</p><h1>Ripoti za mauzo</h1><p class="muted">Linganisha mauzo ya leo na jumla ya mwezi huu.</p></div></section>
+<section class="report-toolbar">
+  <div class="segmented"><a class="{% if period == 'day' %}selected{% endif %}" href="{% url 'reports' %}?period=day">Leo</a><a class="{% if period == 'month' %}selected{% endif %}" href="{% url 'reports' %}?period=month">Mwezi huu</a></div>
+  <a class="button button-secondary" href="{% url 'report_pdf' %}?period={{ period }}">⬇ Pakua PDF</a>
+</section>
+<section class="stats-grid">
+  <article class="stat-card"><span class="stat-icon icon-green">💰</span><p>Jumla ya mauzo</p><strong>TSh {{ total|floatformat:0 }}</strong><small>{{ label }}</small></article>
+  <article class="stat-card"><span class="stat-icon icon-blue">🧾</span><p>Miamala</p><strong>{{ sales|length }}</strong><small>Rekodi za mauzo</small></article>
+  <article class="stat-card"><span class="stat-icon icon-purple">📦</span><p>Bidhaa zilizouzwa</p><strong>{{ quantity_total }}</strong><small>Vipande</small></article>
+</section>
+<section class="panel"><div class="panel-heading"><div><p class="eyebrow">{{ label }}</p><h2>Maelezo ya mauzo</h2></div></div>
+  {% if sales %}<div class="table-wrap"><table><thead><tr><th>Tarehe na muda</th><th>Bidhaa</th><th>Idadi</th><th>Bei moja</th><th>Jumla</th><th>Aliyeuza</th></tr></thead><tbody>
+    {% for sale in sales %}<tr><td>{{ sale.sold_at|date:"j M Y, H:i" }}</td><td>{{ sale.product.name }}</td><td>{{ sale.quantity }}</td><td>TSh {{ sale.unit_price|floatformat:0 }}</td><td><strong>TSh {{ sale.total|floatformat:0 }}</strong></td><td>{{ sale.sold_by.username }}</td></tr>{% endfor %}
+  </tbody><tfoot><tr><th colspan="4">Jumla ya {{ label }}</th><th>TSh {{ total|floatformat:0 }}</th><th></th></tr></tfoot></table></div>{% else %}<p class="empty-state">Hakuna mauzo yaliyorekodiwa katika kipindi hiki.</p>{% endif %}
+</section>
+{% endblock %}
+\

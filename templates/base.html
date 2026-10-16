@@ -1,0 +1,53 @@
+{% load static %}
+<!doctype html>
+<html lang="sw">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1d4ed8">
+  <title>{% block title %}NEKEZA B{% endblock %} · StockGuard</title>
+  <link rel="stylesheet" href="{% static 'inventory/css/app.css' %}">
+  <script src="{% static 'inventory/js/app.js' %}" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <button class="menu-toggle" type="button" aria-label="Fungua menyu" aria-expanded="false">☰</button>
+    <a class="brand" href="{% url 'dashboard' %}">NEKEZA <span class="brand-mark">B</span></a>
+    <div class="account-chip"><strong>{{ request.user.username }}</strong><span>{{ request.user.get_role_display }}</span></div>
+  </header>
+  <div class="layout">
+    <div class="scrim" data-menu-close></div>
+    <aside class="sidebar" aria-label="Menyu kuu">
+      <div class="sidebar-brand">NEKEZA <span class="brand-mark">B</span><button class="menu-close" type="button" aria-label="Funga menyu">×</button></div>
+      <nav>
+        <a href="{% url 'dashboard' %}">🏠 <span>Dashboard</span></a>
+        {% if request.user.role != "admin" %}
+          <a href="{% url 'products' %}">📦 <span>Bidhaa na Stock</span></a>
+          <a href="{% url 'reports' %}">📊 <span>Ripoti za mauzo</span></a>
+        {% endif %}
+        {% if request.user.role == "admin" or request.user.role == "boss" %}
+          <a href="{% url 'users' %}">👥 <span>{% if request.user.role == "admin" %}Manage Maboss{% else %}Manage Wafanyakazi{% endif %}</span></a>
+        {% endif %}
+        <a href="{% url 'settings' %}">⚙️ <span>Settings</span></a>
+        <a href="{% url 'about' %}">ℹ️ <span>Kuhusu App</span></a>
+        <a href="{% url 'contact' %}">📞 <span>Contact Admin</span></a>
+      </nav>
+      <form class="logout-form" action="{% url 'logout' %}" method="post">{% csrf_token %}<button type="submit">🚪 Logout</button></form>
+    </aside>
+    <main class="main-content">
+      {% if messages %}
+        <div class="messages" aria-live="polite">
+          {% for message in messages %}<div class="notice notice-{{ message.tags }}">{{ message }}</div>{% endfor %}
+        </div>
+      {% endif %}
+      {% block content %}{% endblock %}
+      <footer class="footer">NEKEZA B · Stock na mauzo yako, sehemu moja.</footer>
+    </main>
+  </div>
+  <nav class="mobile-nav" aria-label="Menyu ya haraka">
+    <a href="{% url 'dashboard' %}"><span>🏠</span>Home</a>
+    {% if request.user.role != "admin" %}<a href="{% url 'products' %}"><span>📦</span>Stock</a>{% endif %}
+    {% if request.user.role == "admin" or request.user.role == "boss" %}<a href="{% url 'users' %}"><span>👥</span>Watu</a>{% endif %}
+  </nav>
+</body>
+</html>

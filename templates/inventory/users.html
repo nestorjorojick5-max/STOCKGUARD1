@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Usimamizi wa akaunti{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">Akaunti na ruhusa</p><h1>{% if target_role == "boss" %}Manage Maboss{% else %}Manage Wafanyakazi{% endif %}</h1><p class="muted">PIN ya mwanzo hudumu siku 30. Mtumiaji abadilishe nenosiri kupitia Settings.</p></div></section>
+<section class="panel">
+  <div class="panel-heading"><div><p class="eyebrow">Akaunti mpya</p><h2>Sajili {{ target_role|capfirst }} mpya</h2></div></div>
+  <form method="post" class="form-grid">{% csrf_token %}
+    {% for field in form %}<div class="field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>{% endfor %}
+    <div class="form-actions"><button class="button button-primary" type="submit">Tengeneza akaunti</button></div>
+  </form>
+  {% if new_pin %}<div class="pin-reveal" role="status"><strong>PIN ya kuanzia (hifadhi sasa):</strong><code>{{ new_pin }}</code><span>PIN hii huonekana mara moja pekee na itaisha baada ya siku 30.</span></div>{% endif %}
+</section>
+<section class="user-list">
+  {% for managed in users %}
+  <article class="user-card">
+    <div class="user-details">
+      <div class="user-title"><div><span class="eyebrow">Username</span><h2>{{ managed.username }}</h2></div><span class="badge badge-role">{{ managed.get_role_display }}</span></div>
+      <div class="user-meta"><span>PIN expiry</span><strong>{% if managed.credential_expires_at %}{{ managed.credential_expires_at|date:"Y-m-d" }}{% else %}Haijawekwa{% endif %}</strong></div>
+      <div class="user-meta"><span>Aliundwa</span><strong>{{ managed.created_at|date:"Y-m-d" }}</strong></div>
+      <div class="user-meta"><span>Status</span>{% if managed.is_active %}<span class="badge badge-success">✓ Active</span>{% else %}<span class="badge badge-danger">Imesitishwa</span>{% endif %}</div>
+    </div>
+    <div class="user-actions">
+      <form method="post" action="{% url 'reset_pin' managed.pk %}" data-confirm="Umetengeneza PIN mpya kwa {{ managed.username }}? PIN ya sasa haitafanya kazi.">{% csrf_token %}<button class="button button-secondary" type="submit">Reset PIN</button></form>
+      <form method="post" action="{% url 'toggle_user' managed.pk %}" data-confirm="Unataka kubadilisha hali ya akaunti ya {{ managed.username }}?">{% csrf_token %}<button class="button {% if managed.is_active %}button-danger{% else %}button-primary{% endif %}" type="submit">{% if managed.is_active %}Sitisha{% else %}Washa tena{% endif %}</button></form>
+    </div>
+  </article>
+  {% empty %}<div class="panel empty-state">Bado hakuna akaunti zilizosajiliwa.</div>{% endfor %}
+</section>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Bidhaa na Stock{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">Usimamizi wa bidhaa</p><h1>Bidhaa na Stock</h1><p class="muted">Stock hupungua yenyewe kila mauzo yanaporekodiwa.</p></div></section>
+{% if can_manage %}
+<section class="panel">
+  <div class="panel-heading"><div><p class="eyebrow">Anza na bidhaa mpya</p><h2>Ongeza bidhaa</h2></div></div>
+  <form method="post" class="form-grid">
+    {% csrf_token %}
+    {% for field in form %}<div class="field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>{% endfor %}
+    <div class="form-actions"><button class="button button-primary" type="submit">Hifadhi bidhaa</button></div>
+  </form>
+</section>
+<section class="panel">
+  <div class="panel-heading"><div><p class="eyebrow">Mizigo iliyonunuliwa</p><h2>Ongeza stock iliyofika</h2></div></div>
+  <form method="post" action="{% url 'add_stock' %}" class="form-grid">
+    {% csrf_token %}<div class="field"><label for="stock-product">Bidhaa</label><select name="product" id="stock-product" required><option value="">Chagua bidhaa</option>{% for product in products %}<option value="{{ product.pk }}">{{ product.name }}</option>{% endfor %}</select></div>
+    <div class="field"><label for="stock-quantity">Idadi iliyonunuliwa</label><input id="stock-quantity" name="quantity" type="number" min="1" required></div>
+    <div class="field"><label for="stock-cost">Bei ya kununulia kwa moja (TSh)</label><input id="stock-cost" name="unit_cost" type="number" min="0" step="0.01" required></div>
+    <div class="form-actions"><button class="button button-secondary" type="submit">Rekodi manunuzi</button></div>
+  </form>
+</section>
+{% endif %}
+<section class="panel">
+  <div class="panel-heading"><div><p class="eyebrow">Orodha ya bidhaa</p><h2>Stock iliyopo</h2></div><span class="badge">{{ products|length }} bidhaa</span></div>
+  {% if products %}<div class="table-wrap"><table><thead><tr><th>Bidhaa</th><th>Bei ya kununua</th><th>Bei ya kuuza</th><th>Stock</th><th>Hali</th></tr></thead><tbody>
+    {% for product in products %}<tr><td><strong>{{ product.name }}</strong></td><td>TSh {{ product.purchase_price|floatformat:0 }}</td><td>TSh {{ product.selling_price|floatformat:0 }}</td><td>{{ product.stock_quantity }}</td><td>{% if product.stock_quantity <= product.low_stock_threshold %}<span class="badge badge-warning">Stock ndogo</span>{% else %}<span class="badge badge-success">Inapatikana</span>{% endif %}</td></tr>{% endfor %}
+  </tbody></table></div>{% else %}<p class="empty-state">Bado hakuna bidhaa. Boss anaweza kuongeza ya kwanza hapo juu.</p>{% endif %}
+</section>
+{% endblock %}

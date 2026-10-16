@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="sw">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1d4ed8">
+  <title>Ingia · NEKEZA B</title>
+  {% load static %}<link rel="stylesheet" href="{% static 'inventory/css/app.css' %}">
+</head>
+<body class="login-page">
+  <main class="login-card">
+    <a class="brand login-brand" href="{% url 'login' %}">NEKEZA <span class="brand-mark">B</span></a>
+    <p class="eyebrow">StockGuard</p>
+    <h1>Karibu tena</h1>
+    <p class="muted">Ingia kusimamia bidhaa, stock na mauzo.</p>
+    {% if form.non_field_errors %}<div class="notice notice-error">{{ form.non_field_errors }}</div>{% endif %}
+    <form method="post" class="form-stack">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>
+      {% endfor %}
+      {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+      <button class="button button-primary button-wide" type="submit">Ingia kwenye akaunti</button>
+    </form>
+    <p class="login-note">PIN imeisha muda? Wasiliana na Boss au Admin wako ili akubadilishie.</p>
+  </main>
+</body>
+</html>

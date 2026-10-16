@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<section class="page-heading">
+  <div><p class="eyebrow">Muhtasari wa biashara</p><h1>Habari, {{ request.user.username }}</h1><p class="muted">Huu hapa muhtasari wa stock na mauzo ya leo.</p></div>
+  <span class="date-pill">{{ "now"|date:"j M Y" }}</span>
+</section>
+{% if setup_error %}
+  <div class="panel"><h2>Akaunti haijaunganishwa</h2><p>Wasiliana na Admin ili akaunti yako iunganishwe na biashara.</p></div>
+{% else %}
+<section class="stats-grid">
+  <article class="stat-card"><span class="stat-icon icon-blue">📦</span><p>Bidhaa</p><strong>{{ product_count }}</strong><small>Aina za bidhaa</small></article>
+  <article class="stat-card"><span class="stat-icon icon-purple">🧺</span><p>Stock iliyopo</p><strong>{{ stock_count }}</strong><small>Vipande kwa jumla</small></article>
+  <article class="stat-card"><span class="stat-icon icon-green">💰</span><p>Mauzo ya leo</p><strong>TSh {{ revenue_today|floatformat:0 }}</strong><small>{{ sales_count }} miamala</small></article>
+</section>
+<section class="dashboard-grid">
+  <div class="panel">
+    <div class="panel-heading"><div><p class="eyebrow">Rekodi ya haraka</p><h2>Rekodi mauzo</h2></div></div>
+    <form method="post" action="{% url 'create_sale' %}" class="form-stack">
+      {% csrf_token %}
+      <div class="field"><label for="sale-product">Bidhaa</label><select id="sale-product" name="product" required><option value="">Chagua bidhaa</option>{% for product in available_products %}<option value="{{ product.pk }}">{{ product.name }} · stock {{ product.stock_quantity }} · TSh {{ product.selling_price|floatformat:0 }}</option>{% endfor %}</select></div>
+      <div class="field"><label for="sale-quantity">Idadi ya kuuza</label><input id="sale-quantity" type="number" name="quantity" min="1" required></div>
+      <button class="button button-primary" type="submit">Hifadhi mauzo</button>
+    </form>
+  </div>
+  <div class="panel">
+    <div class="panel-heading"><div><p class="eyebrow">Inahitaji uangalizi</p><h2>Stock inayoisha</h2></div><a class="text-link" href="{% url 'products' %}">Tazama zote</a></div>
+    {% if low_stock_products %}
+      <div class="table-wrap"><table><thead><tr><th>Bidhaa</th><th>Stock</th><th>Hali</th></tr></thead><tbody>{% for product in low_stock_products %}<tr><td>{{ product.name }}</td><td>{{ product.stock_quantity }}</td><td><span class="badge badge-warning">Ongeza stock</span></td></tr>{% endfor %}</tbody></table></div>
+    {% else %}<p class="empty-state">Hakuna bidhaa zenye stock ndogo kwa sasa. ✅</p>{% endif %}
+  </div>
+</section>
+<section class="panel">
+  <div class="panel-heading"><div><p class="eyebrow">Miamala ya karibuni</p><h2>Mauzo ya hivi karibuni</h2></div><a class="text-link" href="{% url 'reports' %}">Ripoti zote</a></div>
+  {% if recent_sales %}<div class="table-wrap"><table><thead><tr><th>Bidhaa</th><th>Idadi</th><th>Jumla</th><th>Aliyeuza</th><th>Tarehe</th></tr></thead><tbody>
+    {% for sale in recent_sales %}<tr><td>{{ sale.product.name }}</td><td>{{ sale.quantity }}</td><td>TSh {{ sale.total|floatformat:0 }}</td><td>{{ sale.sold_by.username }}</td><td>{{ sale.sold_at|date:"j M, H:i" }}</td></tr>{% endfor %}
+  </tbody></table></div>{% else %}<p class="empty-state">Bado hakuna mauzo yaliyorekodiwa.</p>{% endif %}
+</section>
+{% endif %}
+{% endblock %}

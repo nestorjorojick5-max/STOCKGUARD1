@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Dashboard ya Admin{% endblock %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">Usimamizi wa mfumo</p><h1>Dashboard ya Admin</h1><p class="muted">Karibu {{ request.user.username }}. Sajili na simamia Maboss.</p></div></section>
+<section class="stats-grid">
+  <article class="stat-card"><span class="stat-icon icon-blue">👥</span><p>Maboss</p><strong>{{ boss_count }}</strong><small>Akaunti za biashara</small></article>
+  <article class="stat-card"><span class="stat-icon icon-green">🧑‍💼</span><p>Wafanyakazi</p><strong>{{ worker_count }}</strong><small>Katika biashara zote</small></article>
+</section>
+<section class="action-grid">
+  <article class="action-card"><div class="action-icon">➕</div><h2>Sajili Boss Mpya</h2><p>Tengeneza akaunti ya biashara na PIN ya kuanzia yenye muda wa siku 30.</p><a class="button button-dark button-wide" href="{% url 'users' %}">Fungua usimamizi wa Maboss</a></article>
+  <article class="action-card"><div class="action-icon">👥</div><h2>Manage Maboss</h2><p>Tazama hali ya akaunti, badilisha PIN au simamisha akaunti.</p><a class="button button-dark button-wide" href="{% url 'users' %}">Simamia akaunti</a></article>
+</section>
+{% endblock %}
