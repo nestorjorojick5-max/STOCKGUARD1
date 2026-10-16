@@ -83,12 +83,49 @@ class ManagedUserForm(forms.Form):
         max_length=150,
         widget=forms.TextInput(attrs={"autocomplete": "username"}),
     )
+    email = forms.EmailField(
+        label="Anwani ya barua pepe",
+        widget=forms.EmailInput(attrs={"autocomplete": "email"}),
+    )
 
     def clean_username(self):
         username = self.cleaned_data["username"].strip()
         if User.objects.filter(username__iexact=username).exists():
             raise forms.ValidationError("Jina hili tayari linatumika.")
         return username
+
+    def clean_email(self):
+        email = self.cleaned_data["email"].strip().lower()
+        if User.objects.filter(email__iexact=email).exists():
+            raise forms.ValidationError("Barua pepe hii tayari inatumika.")
+        return email
+
+
+class ChangeEmailForm(forms.Form):
+    email = forms.EmailField(
+        label="Anwani ya barua pepe",
+        widget=forms.EmailInput(attrs={"autocomplete": "email"}),
+    )
+    current_password = forms.CharField(
+        label="Thibitisha nenosiri lako", widget=forms.PasswordInput
+    )
+
+    def __init__(self, *args, user, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+        self.fields["email"].initial = user.email
+
+    def clean_email(self):
+        email = self.cleaned_data["email"].strip().lower()
+        if User.objects.filter(email__iexact=email).exclude(pk=self.user.pk).exists():
+            raise forms.ValidationError("Barua pepe hii tayari inatumika.")
+        return email
+
+    def clean_current_password(self):
+        password = self.cleaned_data["current_password"]
+        if not self.user.check_password(password):
+            raise forms.ValidationError("Nenosiri si sahihi.")
+        return password
 
 
 class ChangePasswordForm(forms.Form):

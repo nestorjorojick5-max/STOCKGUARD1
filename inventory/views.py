@@ -3,11 +3,14 @@ from calendar import monthrange
 from datetime import datetime, time, timedelta
 from decimal import Decimal
 from io import BytesIO
+from pathlib import Path
 
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView as DjangoLoginView
+from django.contrib.auth.views import PasswordResetConfirmView as DjangoPasswordResetConfirmView
+from django.contrib.auth.views import PasswordResetView as DjangoPasswordResetView
 from django.db import IntegrityError, transaction
 from django.db.models import F, Sum
 from django.http import HttpResponse
@@ -20,6 +23,7 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Spacer, Table, TableStyle, Paragraph
 
 from .forms import (
+    ChangeEmailForm,
     ChangePasswordForm,
     LoginForm,
     ManagedUserForm,
@@ -35,10 +39,44 @@ class LoginView(DjangoLoginView):
     authentication_form = LoginForm
 
 
+class CredentialResetConfirmView(DjangoPasswordResetConfirmView):
+    def form_valid(self, form):
+        self.user.credential_expires_at = None
+        self.user.save(update_fields=["credential_expires_at"])
+        return super().form_valid(form)
+
+
+class BilingualPasswordResetView(DjangoPasswordResetView):
+    def form_valid(self, form):
+        if self.request.COOKIES.get("nekezab_language") == "en":
+            self.email_template_name = "registration/password_reset_email_en.html"
+            self.subject_template_name = (
+                "registration/password_reset_subject_en.txt"
+            )
+        return super().form_valid(form)
+
+
 def home(request):
     if request.user.is_authenticated:
         return redirect("dashboard")
     return redirect("login")
+
+
+def service_worker(request):
+    worker_path = (
+        Path(__file__).parent
+        / "static"
+        / "inventory"
+        / "js"
+        / "service-worker.js"
+    )
+    response = HttpResponse(
+        worker_path.read_text(encoding="utf-8"),
+        content_type="application/javascript; charset=utf-8",
+    )
+    response["Cache-Control"] = "no-cache"
+    response["Service-Worker-Allowed"] = "/"
+    return response
 
 
 def organization_for(user):
@@ -197,6 +235,7 @@ def create_sale(request):
 def _report_period(request):
     today = timezone.localdate()
     period = request.GET.get("period", "day")
+    language = request.COOKIES.get("nekezab_language", "sw")
     if period not in ("day", "month"):
         period = "day"
     if period == "month":
@@ -206,7 +245,24 @@ def _report_period(request):
         end = timezone.make_aware(
             datetime.combine(selected.replace(day=end_day) + timedelta(days=1), time.min)
         )
-        label = selected.strftime("%B %Y")
+        if language == "en":
+            label = selected.strftime("%B %Y")
+        else:
+            swahili_months = (
+                "Januari",
+                "Februari",
+                "Machi",
+                "Aprili",
+                "Mei",
+                "Juni",
+                "Julai",
+                "Agosti",
+                "Septemba",
+                "Oktoba",
+                "Novemba",
+                "Desemba",
+            )
+            label = f"{swahili_months[selected.month - 1]} {selected.year}"
     else:
         selected = today
         start = timezone.make_aware(datetime.combine(selected, time.min))
@@ -249,10 +305,17 @@ def report_pdf(request):
     sales = Sale.objects.filter(
         organization=organization, sold_at__gte=start, sold_at__lt=end
     ).select_related("product", "sold_by")
+    english_report = request.COOKIES.get("nekezab_language") == "en"
     output = BytesIO()
     document = SimpleDocTemplate(output, pagesize=A4)
     styles = getSampleStyleSheet()
-    rows = [["Muda", "Bidhaa", "Idadi", "Bei (TSh)", "Jumla (TSh)", "Mfanyakazi"]]
+    rows = [
+        (
+            ["Time", "Product", "Qty", "Unit price (TSh)", "Total (TSh)", "Worker"]
+            if english_report
+            else ["Muda", "Bidhaa", "Idadi", "Bei (TSh)", "Jumla (TSh)", "Mfanyakazi"]
+        )
+    ]
     for sale in sales:
         rows.append(
             [
@@ -265,7 +328,9 @@ def report_pdf(request):
             ]
         )
     total = sum((sale.total for sale in sales), Decimal("0"))
-    rows.append(["", "", "", "JUMLA", f"{total:,.2f}", ""])
+    rows.append(
+        ["", "", "", "TOTAL" if english_report else "JUMLA", f"{total:,.2f}", ""]
+    )
     table = Table(rows, repeatRows=1)
     table.setStyle(
         TableStyle(
@@ -281,7 +346,12 @@ def report_pdf(request):
     )
     document.build(
         [
-            Paragraph("NEKEZA B — Ripoti ya mauzo", styles["Title"]),
+            Paragraph(
+                "NEKEZA B — Sales report"
+                if english_report
+                else "NEKEZA B — Ripoti ya mauzo",
+                styles["Title"],
+            ),
             Paragraph(f"{organization.username} · {label}", styles["Normal"]),
             Spacer(1, 14),
             table,
@@ -306,6 +376,7 @@ def users(request):
         new_pin = _create_pin()
         managed = User(
             username=form.cleaned_data["username"],
+            email=form.cleaned_data["email"],
             role=target_role,
             organization=None if is_admin else request.user,
             credential_expires_at=timezone.now() + timedelta(days=30),
@@ -389,15 +460,35 @@ def toggle_user(request, user_id):
 
 @login_required
 def settings_page(request):
-    form = ChangePasswordForm(request.POST or None, user=request.user)
-    if request.method == "POST" and form.is_valid():
-        request.user.set_password(form.cleaned_data["new_password"])
-        request.user.credential_expires_at = None
-        request.user.save(update_fields=["password", "credential_expires_at"])
-        update_session_auth_hash(request, request.user)
-        messages.success(request, "Nenosiri limebadilishwa kikamilifu.")
-        return redirect("settings")
-    return render(request, "inventory/settings.html", {"form": form})
+    password_form = ChangePasswordForm(
+        request.POST if request.POST.get("action") == "password" else None,
+        user=request.user,
+    )
+    email_form = ChangeEmailForm(
+        request.POST if request.POST.get("action") == "email" else None,
+        user=request.user,
+    )
+    if request.method == "POST" and request.POST.get("action") == "password":
+        if password_form.is_valid():
+            request.user.set_password(password_form.cleaned_data["new_password"])
+            request.user.credential_expires_at = None
+            request.user.save(update_fields=["password", "credential_expires_at"])
+            update_session_auth_hash(request, request.user)
+            messages.success(request, "Nenosiri limebadilishwa kikamilifu.")
+            return redirect("settings")
+    elif request.method == "POST" and request.POST.get("action") == "email":
+        if email_form.is_valid():
+            request.user.email = email_form.cleaned_data["email"]
+            request.user.save(update_fields=["email"])
+            messages.success(
+                request, "Anwani ya barua pepe imehifadhiwa kwa akaunti yako."
+            )
+            return redirect("settings")
+    return render(
+        request,
+        "inventory/settings.html",
+        {"password_form": password_form, "email_form": email_form},
+    )
 
 
 @login_required

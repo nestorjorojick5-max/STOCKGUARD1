@@ -15,6 +15,7 @@
   <article class="user-card">
     <div class="user-details">
       <div class="user-title"><div><span class="eyebrow">Username</span><h2>{{ managed.username }}</h2></div><span class="badge badge-role">{{ managed.get_role_display }}</span></div>
+      <div class="user-meta"><span>Email</span><strong>{{ managed.email|default:"Haijawekwa" }}</strong></div>
       <div class="user-meta"><span>PIN expiry</span><strong>{% if managed.credential_expires_at %}{{ managed.credential_expires_at|date:"Y-m-d" }}{% else %}Haijawekwa{% endif %}</strong></div>
       <div class="user-meta"><span>Aliundwa</span><strong>{{ managed.created_at|date:"Y-m-d" }}</strong></div>
       <div class="user-meta"><span>Status</span>{% if managed.is_active %}<span class="badge badge-success">✓ Active</span>{% else %}<span class="badge badge-danger">Imesitishwa</span>{% endif %}</div>

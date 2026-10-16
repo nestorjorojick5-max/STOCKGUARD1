@@ -1,6 +1,10 @@
 from datetime import timedelta
+import json
+from pathlib import Path
+from urllib.parse import urlsplit
 
-from django.test import TestCase
+from django.core import mail
+from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 
@@ -98,3 +102,78 @@ class StockGuardWorkflowTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertFalse(response.wsgi_request.user.is_authenticated)
 
+    @override_settings(EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend")
+    def test_password_reset_email_restores_expired_account(self):
+        account = User.objects.create_user(
+            username="emailuser",
+            email="emailuser@example.com",
+            password="StrongPass123!",
+            role=User.Role.WORKER,
+            organization=self.boss,
+            credential_expires_at=timezone.now() - timedelta(days=1),
+        )
+        response = self.client.post(
+            reverse("password_reset"), {"email": account.email}, follow=True
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to, [account.email])
+        self.assertIn("/password-reset/", mail.outbox[0].body)
+
+        reset_url = next(
+            line.strip()
+            for line in mail.outbox[0].body.splitlines()
+            if "/password-reset/" in line
+        )
+        reset_response = self.client.get(urlsplit(reset_url).path)
+        confirm_path = reset_response["Location"]
+        self.assertEqual(self.client.get(confirm_path).status_code, 200)
+        response = self.client.post(
+            confirm_path,
+            {
+                "new_password1": "BrandNewStrongPass123!",
+                "new_password2": "BrandNewStrongPass123!",
+            },
+        )
+
+        account.refresh_from_db()
+        self.assertEqual(response.status_code, 302)
+        self.assertIsNone(account.credential_expires_at)
+        self.assertTrue(account.check_password("BrandNewStrongPass123!"))
+
+    @override_settings(EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend")
+    def test_password_reset_email_uses_selected_english_language(self):
+        account = User.objects.create_user(
+            username="englishuser",
+            email="englishuser@example.com",
+            password="StrongPass123!",
+            role=User.Role.WORKER,
+            organization=self.boss,
+        )
+        self.client.cookies["nekezab_language"] = "en"
+        self.client.post(reverse("password_reset"), {"email": account.email})
+
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn("Password reset", mail.outbox[0].subject)
+        self.assertIn("You requested a password reset", mail.outbox[0].body)
+
+    def test_service_worker_is_available_at_root_scope(self):
+        response = self.client.get(reverse("service_worker"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Service-Worker-Allowed"], "/")
+        self.assertIn('self.addEventListener("fetch"', response.content.decode())
+
+    def test_pwa_manifest_has_standard_install_icons(self):
+        manifest_path = (
+            Path(__file__).parent
+            / "static"
+            / "inventory"
+            / "manifest.webmanifest"
+        )
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+
+        icon_sizes = {icon["sizes"] for icon in manifest["icons"]}
+        self.assertIn("192x192", icon_sizes)
+        self.assertIn("512x512", icon_sizes)

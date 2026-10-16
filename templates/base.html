@@ -5,14 +5,37 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#1d4ed8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="NEKEZA B">
+  <script>try { if (!sessionStorage.getItem("nekezab-splash-seen")) document.documentElement.classList.add("show-splash"); } catch (_) { document.documentElement.classList.add("show-splash"); }</script>
   <title>{% block title %}NEKEZA B{% endblock %} · StockGuard</title>
+  <link rel="manifest" href="{% static 'inventory/manifest.webmanifest' %}">
+  <link rel="icon" href="{% static 'inventory/icons/icon.svg' %}" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="{% static 'inventory/icons/icon-192.png' %}">
   <link rel="stylesheet" href="{% static 'inventory/css/app.css' %}">
   <script src="{% static 'inventory/js/app.js' %}" defer></script>
 </head>
 <body>
+  <div class="splash-screen" data-splash-screen role="status" aria-live="polite" aria-label="Inapakia NEKEZA B">
+    <div class="splash-orb splash-orb-one"></div><div class="splash-orb splash-orb-two"></div>
+    <div class="splash-content">
+      <div class="splash-logo"><span>NEKEZA</span><span class="splash-brand-mark">B</span></div>
+      <p class="splash-tagline">STOCK <span>·</span> SALES <span>·</span> GROWTH</p>
+      <div class="splash-loader" aria-hidden="true"><span></span></div>
+      <p class="splash-message" data-splash-message>Tunaandaa biashara yako...</p>
+      <div class="splash-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+    </div>
+  </div>
   <header class="topbar">
     <button class="menu-toggle" type="button" aria-label="Fungua menyu" aria-expanded="false">☰</button>
     <a class="brand" href="{% url 'dashboard' %}">NEKEZA <span class="brand-mark">B</span></a>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Badilisha mwonekano">🌙 <span class="theme-label">Mwonekano</span></button>
+    <button class="install-button" type="button" data-install-app>⬇ <span>Sakinisha App</span></button>
+    <div class="language-switch" role="group" aria-label="Chagua lugha">
+      <button type="button" data-language-option="sw" aria-label="Kiswahili">SW</button>
+      <button type="button" data-language-option="en" aria-label="English">EN</button>
+    </div>
     <div class="account-chip"><strong>{{ request.user.username }}</strong><span>{{ request.user.get_role_display }}</span></div>
   </header>
   <div class="layout">
@@ -32,7 +55,7 @@
         <a href="{% url 'about' %}">ℹ️ <span>Kuhusu App</span></a>
         <a href="{% url 'contact' %}">📞 <span>Contact Admin</span></a>
       </nav>
-      <form class="logout-form" action="{% url 'logout' %}" method="post">{% csrf_token %}<button type="submit">🚪 Logout</button></form>
+      <form class="logout-form" action="{% url 'logout' %}" method="post" data-confirm="Unataka kutoka kwenye akaunti yako?">{% csrf_token %}<button type="submit">🚪 Logout</button></form>
     </aside>
     <main class="main-content">
       {% if messages %}
@@ -48,6 +71,16 @@
     <a href="{% url 'dashboard' %}"><span>🏠</span>Home</a>
     {% if request.user.role != "admin" %}<a href="{% url 'products' %}"><span>📦</span>Stock</a>{% endif %}
     {% if request.user.role == "admin" or request.user.role == "boss" %}<a href="{% url 'users' %}"><span>👥</span>Watu</a>{% endif %}
+    <form class="mobile-logout" action="{% url 'logout' %}" method="post" data-confirm="Unataka kutoka kwenye akaunti yako?">{% csrf_token %}<button type="submit"><span>🚪</span>Toka</button></form>
   </nav>
+  <dialog class="install-dialog" data-install-dialog aria-labelledby="install-title">
+    <form method="dialog" class="dialog-close-form"><button class="dialog-close" aria-label="Funga maelekezo">×</button></form>
+    <div class="install-dialog-icon">B</div>
+    <p class="eyebrow">NEKEZA B · StockGuard</p>
+    <h2 id="install-title">Sakinisha kwenye kifaa chako</h2>
+    <p class="muted" data-install-instructions>Fuata maelekezo ya browser yako ili kuongeza app kwenye kifaa.</p>
+    <button class="button button-primary button-wide" type="button" data-install-confirm hidden>Sakinisha sasa</button>
+    <button class="button button-secondary button-wide dialog-done" type="button" data-install-close>Sawa</button>
+  </dialog>
 </body>
 </html>

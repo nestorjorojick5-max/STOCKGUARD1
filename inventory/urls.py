@@ -19,4 +19,5 @@ urlpatterns = [
     path("settings/", views.settings_page, name="settings"),
     path("about/", views.about, name="about"),
     path("contact/", views.contact, name="contact"),
+    path("service-worker.js", views.service_worker, name="service_worker"),
 ]

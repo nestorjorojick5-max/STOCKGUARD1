@@ -4,12 +4,40 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#1d4ed8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="NEKEZA B">
+  <script>try { if (!sessionStorage.getItem("nekezab-splash-seen")) document.documentElement.classList.add("show-splash"); } catch (_) { document.documentElement.classList.add("show-splash"); }</script>
   <title>Ingia · NEKEZA B</title>
-  {% load static %}<link rel="stylesheet" href="{% static 'inventory/css/app.css' %}">
+  {% load static %}
+  <link rel="manifest" href="{% static 'inventory/manifest.webmanifest' %}">
+  <link rel="icon" href="{% static 'inventory/icons/icon.svg' %}" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="{% static 'inventory/icons/icon-192.png' %}">
+  <link rel="stylesheet" href="{% static 'inventory/css/app.css' %}">
+  <script src="{% static 'inventory/js/app.js' %}" defer></script>
 </head>
 <body class="login-page">
+  <div class="splash-screen" data-splash-screen role="status" aria-live="polite" aria-label="Inapakia NEKEZA B">
+    <div class="splash-orb splash-orb-one"></div><div class="splash-orb splash-orb-two"></div>
+    <div class="splash-content">
+      <div class="splash-logo"><span>NEKEZA</span><span class="splash-brand-mark">B</span></div>
+      <p class="splash-tagline">STOCK <span>·</span> SALES <span>·</span> GROWTH</p>
+      <div class="splash-loader" aria-hidden="true"><span></span></div>
+      <p class="splash-message" data-splash-message>Tunaandaa biashara yako...</p>
+      <div class="splash-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+    </div>
+  </div>
   <main class="login-card">
-    <a class="brand login-brand" href="{% url 'login' %}">NEKEZA <span class="brand-mark">B</span></a>
+    <div class="login-topline">
+      <a class="brand login-brand" href="{% url 'login' %}">NEKEZA <span class="brand-mark">B</span></a>
+      <div class="login-options">
+        <div class="language-switch" role="group" aria-label="Chagua lugha">
+          <button type="button" data-language-option="sw" aria-label="Kiswahili">SW</button>
+          <button type="button" data-language-option="en" aria-label="English">EN</button>
+        </div>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Badilisha mwonekano">🌙 <span class="theme-label">Mwonekano</span></button>
+      </div>
+    </div>
     <p class="eyebrow">StockGuard</p>
     <h1>Karibu tena</h1>
     <p class="muted">Ingia kusimamia bidhaa, stock na mauzo.</p>
@@ -23,6 +51,17 @@
       <button class="button button-primary button-wide" type="submit">Ingia kwenye akaunti</button>
     </form>
     <p class="login-note">PIN imeisha muda? Wasiliana na Boss au Admin wako ili akubadilishie.</p>
+    <a class="forgot-link" href="{% url 'password_reset' %}">Umesahau nenosiri? Tuma link ya kulibadilisha kwa email</a>
+    <button class="install-button login-install" type="button" data-install-app>⬇ <span>Sakinisha App kwenye kifaa</span></button>
   </main>
+  <dialog class="install-dialog" data-install-dialog aria-labelledby="install-title">
+    <form method="dialog" class="dialog-close-form"><button class="dialog-close" aria-label="Funga maelekezo">×</button></form>
+    <div class="install-dialog-icon">B</div>
+    <p class="eyebrow">NEKEZA B · StockGuard</p>
+    <h2 id="install-title">Sakinisha kwenye kifaa chako</h2>
+    <p class="muted" data-install-instructions>Fuata maelekezo ya browser yako ili kuongeza app kwenye kifaa.</p>
+    <button class="button button-primary button-wide" type="button" data-install-confirm hidden>Sakinisha sasa</button>
+    <button class="button button-secondary button-wide dialog-done" type="button" data-install-close>Sawa</button>
+  </dialog>
 </body>
 </html>
