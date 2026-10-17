@@ -47,6 +47,16 @@ Mfumo wa Django wa kusimamia bidhaa, stock, mauzo na watumiaji kwa simu na kompy
 
 Tengeneza database kwenye Supabase, kisha weka connection string yake kwenye `DATABASE_URL`. Kwa deploy, tumia Session Pooler ikiwa hosting haiwezi kutumia Direct connection; weka SSL, `DEBUG=False`, `SECRET_KEY` yenye thamani salama, na `ALLOWED_HOSTS` ya domain yako. Usihifadhi nenosiri la database wala `SECRET_KEY` kwenye Git. Kisha endesha `python manage.py migrate` dhidi ya database hiyo.
 
+## Kudeploy Render
+
+1. Hakikisha project imepushiwa kwenye GitHub, kisha Render Dashboard → **New** → **Blueprint** na chagua repository hii. Render itasoma `render.yaml` na kuunda web service.
+2. Render itaomba `DATABASE_URL` wakati wa kuunda Blueprint. Weka connection string ya PostgreSQL ya Supabase; tumia **Session Pooler** na hakikisha URL ina SSL. `SECRET_KEY` inazalishwa na Render na `DEBUG=False` imewekwa kwa production.
+3. Bonyeza **Apply**. Build itaweka dependencies na kukusanya static files; service itafanya migrations kisha iwake. Fungua domain ya `onrender.com` inayoonekana kwenye service.
+4. Kwa kutuma password-reset email, fungua service → **Environment** na weka `EMAIL_HOST_USER` kuwa `nestorjorojick5@gmail.com`, `EMAIL_HOST_PASSWORD` kuwa Gmail App Password, na `DEFAULT_FROM_EMAIL` kuwa `NEKEZA B <nestorjorojick5@gmail.com>`. Tumia App Password, si nenosiri la kawaida la Gmail. Usiiweke kwenye Git wala kuituma kwenye chat; Render huihifadhi kama environment secret.
+5. Tengeneza Admin wa kwanza kupitia **Shell** ya web service kwa kuendesha `python manage.py createsuperuser`. Ikiwa plan yako haina Shell, endesha `.\.venv\Scripts\python.exe manage.py createsuperuser` kwenye kompyuta yako, ukiwa na `DATABASE_URL` ya Supabase kwenye `.env`. Kisha ingia kwenye `/django-admin/` kwa domain ya Render na uanze kusajili Maboss.
+
+`DATABASE_URL` ni lazima kwenye production; app itakataa kuwaka ikiwa haijawekwa ili isitumie SQLite ya muda ya Render. Kila kuanza service huendesha migrations moja kwa moja. Tumia GitHub repository ya private ikiwa hutaki code yako ionekane hadharani.
+
 ## Ukaguzi
 
 ```powershell
