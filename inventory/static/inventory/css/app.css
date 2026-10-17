@@ -209,7 +209,7 @@ tfoot th { border-top: 1px solid var(--line); border-bottom: 0; color: var(--ink
 .landing-nav-actions .theme-toggle:hover { background: #e8eef8; }
 .landing-nav-actions .landing-login { min-height: 40px; padding: 9px 20px; border-radius: 11px; }
 .landing-hero { position: relative; display: grid; width: min(1240px, calc(100% - 64px)); min-height: 590px; align-items: center; grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr); gap: 24px; margin: 0 auto; padding: 58px 0 54px; }
-.landing-hero::before { position: absolute; z-index: -1; top: 20px; left: 34%; width: 66vw; height: 540px; border-radius: 50%; background: radial-gradient(ellipse, #edf4ff 0%, rgba(237,244,255,0) 70%); content: ""; }
+.landing-hero::before { position: absolute; z-index: -1; top: 20px; left: 34%; width: 66%; height: 540px; border-radius: 50%; background: radial-gradient(ellipse, #edf4ff 0%, rgba(237,244,255,0) 70%); content: ""; }
 .landing-hero-copy { position: relative; z-index: 2; padding: 15px 0; animation: landing-rise .7s cubic-bezier(.2,.8,.2,1) both; }
 .landing-kicker { display: inline-flex; align-items: center; gap: 9px; color: #3269bf; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
 .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #40bf89; box-shadow: 0 0 0 5px rgba(64,191,137,.13); }
@@ -286,6 +286,18 @@ tfoot th { border-top: 1px solid var(--line); border-bottom: 0; color: var(--ink
 @keyframes shield-float { 0%,100% { transform: rotate(-2deg) translateY(0); } 50% { transform: rotate(2deg) translateY(-9px); } }
 @keyframes landing-note { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 @keyframes landing-glow { to { transform: scale(1.14); opacity: .7; } }
+
+@media (max-width: 760px) {
+  .landing-hero { width: min(calc(100% - 48px),680px); grid-template-columns: 1fr; gap: 10px; padding: 48px 0 34px; }
+  .landing-hero-copy { max-width: 620px; }
+  .landing-visual { width: min(100%,660px); justify-self: center; }
+  .landing-art { width: 100%; }
+  .landing-benefit-strip { width: min(calc(100% - 48px),680px); }
+  .landing-section { width: min(calc(100% - 48px),680px); padding: 78px 0; }
+  .landing-feature-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .landing-workflow { grid-template-columns: 1fr; gap: 30px; padding: 62px max(24px,calc((100% - 680px)/2)); }
+  .landing-final-cta { width: min(calc(100% - 48px),680px); }
+}
 
 :root[data-theme="dark"] body { color: var(--ink); background: var(--background); }
 :root[data-theme="dark"] .sidebar,
@@ -460,8 +472,8 @@ tfoot th { border-top: 1px solid var(--line); border-bottom: 0; color: var(--ink
   .landing-cta { min-height: 47px; padding: 11px 15px; font-size: 12px; }
   .landing-text-link { font-size: 11px; }
   .landing-trust { margin-top: 22px; font-size: 9px; }
-  .landing-visual { margin: 5px -9px 0; }
-  .landing-art { width: 108%; }
+  .landing-visual { width: 100%; margin: 5px 0 0; }
+  .landing-art { width: 100%; max-width: 100%; }
   .floating-note { gap: 6px; padding: 8px; border-radius: 12px; }
   .floating-note > span { width: 26px; height: 26px; border-radius: 8px; font-size: 14px; }
   .floating-note strong { font-size: 8px; }
@@ -529,6 +541,33 @@ tfoot th { border-top: 1px solid var(--line); border-bottom: 0; color: var(--ink
   .login-page { padding: 16px; }
 }
 @media (max-width: 380px) {
+  .landing-nav { min-height: 60px; gap: 5px; padding-inline: 8px; }
+  .landing-brand { gap: 5px; font-size: 14px; letter-spacing: -.03em; }
+  .landing-brand .brand-icon { width: 30px; height: 30px; }
+  .landing-signup-link { display: none; }
+  .landing-nav-actions { gap: 4px; }
+  .landing-nav-actions .language-switch { gap: 0; padding: 2px; }
+  .landing-nav-actions .language-switch button { min-width: 22px; min-height: 27px; }
+  .landing-nav-actions .theme-toggle { flex-basis: 30px; width: 30px; min-height: 31px; }
+  .landing-nav-actions .landing-login { min-height: 32px; padding: 6px 9px; }
+  .landing-hero { width: calc(100% - 30px); padding: 38px 0 24px; }
+  .landing-hero h1 { font-size: clamp(38px,11.5vw,47px); }
+  .landing-hero-copy > p { font-size: 13px; }
+  .landing-hero-actions { gap: 12px; }
+  .landing-hero-actions .landing-cta { width: 100%; justify-content: center; }
+  .landing-signup-secondary, .landing-text-link { font-size: 10px; }
+  .landing-visual { margin-inline: 0; }
+  .floating-note { gap: 5px; padding: 7px; }
+  .floating-note > span { width: 23px; height: 23px; font-size: 12px; }
+  .floating-note strong { font-size: 7px; }
+  .floating-note small { font-size: 6px; }
+  .landing-benefit-strip, .landing-section { width: calc(100% - 30px); }
+  .landing-section { padding: 58px 0; }
+  .landing-section-heading h2 { font-size: 33px; }
+  .landing-feature-card { padding: 16px; }
+  .landing-workflow { padding: 48px 15px; }
+  .workflow-copy h2 { font-size: 37px; }
+  .landing-final-cta { width: calc(100% - 30px); padding: 17px; }
   .topbar { gap: 6px; padding-inline: 8px; }
   .menu-toggle { flex: 0 0 28px; font-size: 25px; }
   .brand { gap: 3px; font-size: 14px; letter-spacing: 0; }
@@ -538,8 +577,8 @@ tfoot th { border-top: 1px solid var(--line); border-bottom: 0; color: var(--ink
   .install-button { flex-basis: 30px; width: 30px; min-height: 32px; padding: 4px; }
   .topbar .language-switch { gap: 0; padding: 2px; }
   .topbar .language-switch button { min-width: 22px; min-height: 28px; padding: 3px; font-size: 10px; }
-  .account-chip strong, .account-chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap;     .install-dialog { padding: 24px 20px; }
-  }
+  .account-chip strong, .account-chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .install-dialog { padding: 24px 20px; }
   .main-content { padding-inline: 11px; }
   .stats-grid { grid-template-columns: minmax(0, 1fr); }
   .stat-card { min-height: 112px; }
