@@ -1,0 +1,140 @@
+{% load static %}
+<!doctype html>
+<html lang="sw">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#102a56">
+  <meta name="description" content="StockGuard husaidia biashara kusimamia bidhaa, stock, mauzo na ripoti kwa sehemu moja.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="StockGuard">
+  <script>try { if (!sessionStorage.getItem("stockguard-splash-seen")) document.documentElement.classList.add("show-splash"); } catch (_) { document.documentElement.classList.add("show-splash"); }</script>
+  <title>StockGuard · Simamia biashara yako</title>
+  <link rel="manifest" href="{% static 'inventory/manifest.webmanifest' %}">
+  <link rel="icon" href="{% static 'inventory/icons/icon.svg' %}" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="{% static 'inventory/icons/icon-192.png' %}">
+  <link rel="stylesheet" href="{% static 'inventory/css/app.css' %}">
+  <script src="{% static 'inventory/js/app.js' %}" defer></script>
+</head>
+<body class="landing-page">
+  <div class="splash-screen" data-splash-screen role="status" aria-live="polite" aria-label="Inapakia StockGuard">
+    <div class="splash-orb splash-orb-one"></div><div class="splash-orb splash-orb-two"></div>
+    <div class="splash-content">
+      <div class="splash-logo"><img src="{% static 'inventory/icons/icon.svg' %}" alt=""><span>StockGuard</span></div>
+      <p class="splash-tagline">STOCK <span>·</span> SALES <span>·</span> GROWTH</p>
+      <div class="splash-loader" aria-hidden="true"><span></span></div>
+      <p class="splash-message" data-splash-message>Tunaandaa biashara yako...</p>
+      <div class="splash-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+    </div>
+  </div>
+  <header class="landing-nav">
+    <a class="brand landing-brand" href="{% url 'home' %}"><img class="brand-icon" src="{% static 'inventory/icons/icon.svg' %}" alt="">StockGuard</a>
+    <nav class="landing-nav-links" aria-label="Menyu">
+      <a href="#vipengele">Vipengele</a>
+      <a href="#jinsi-inavyofanya">Jinsi inavyofanya kazi</a>
+    </nav>
+    <div class="landing-nav-actions">
+    {% if admin_signup_available %}<a class="landing-signup-link" href="{% url 'admin_signup' %}">Jisajili Admin</a>{% endif %}
+    <div class="language-switch" role="group" aria-label="Chagua lugha">
+        <button type="button" data-language-option="sw" aria-label="Kiswahili">SW</button>
+        <button type="button" data-language-option="en" aria-label="English">EN</button>
+      </div>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Badilisha mwonekano">🌙 <span class="theme-label">Mwonekano</span></button>
+      <a class="button button-primary landing-login" href="{% url 'login' %}">Ingia</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="landing-hero">
+      <div class="landing-hero-copy">
+        <span class="landing-kicker"><span class="status-dot"></span> Usimamizi wa biashara, rahisi zaidi</span>
+        <h1>Biashara yako.<br><span>Udhibiti wako.</span></h1>
+        <p>Simamia bidhaa, fuatilia stock, rekodi mauzo na elewa mapato yako—vyote sehemu moja, kwenye simu au kompyuta.</p>
+        <div class="landing-hero-actions">
+          <a class="button button-primary landing-cta" href="{% url 'login' %}">Anza kusimamia biashara <span aria-hidden="true">→</span></a>
+          {% if admin_signup_available %}<a class="landing-signup-secondary" href="{% url 'admin_signup' %}">Jisajili Admin <span aria-hidden="true">↗</span></a>{% endif %}
+          <a class="landing-text-link" href="#vipengele">Gundua StockGuard <span aria-hidden="true">↓</span></a>
+        </div>
+        <div class="landing-trust"><span class="trust-shield">✓</span> Salama · Rahisi kutumia · Tayari kwa simu</div>
+      </div>
+      <div class="landing-visual" aria-label="Mchoro wa dashboard ya StockGuard">
+        <div class="landing-visual-glow"></div>
+        <img class="landing-art" src="{% static 'inventory/images/stockguard-dashboard.svg' %}" alt="Mchoro wa dashboard inayoonyesha bidhaa, stock, mauzo na ngao ya ulinzi wa mapato">
+        <div class="floating-note floating-note-stock"><span>▦</span><div><strong>Stock inadhibitiwa</strong><small>Hali ya bidhaa kwa wakati</small></div><i>✓</i></div>
+        <div class="floating-note floating-note-sales"><span class="sales-note-icon">↗</span><div><strong>Mauzo yanafuatiliwa</strong><small>Ripoti zinazoeleweka</small></div></div>
+      </div>
+    </section>
+
+    <section class="landing-benefit-strip" aria-label="Faida za StockGuard">
+      <div><span>01</span><p>Usikose bidhaa zinazoisha</p></div>
+      <div><span>02</span><p>Rekodi mauzo kwa urahisi</p></div>
+      <div><span>03</span><p>Fanya maamuzi kwa taarifa</p></div>
+    </section>
+
+    <section class="landing-section" id="vipengele">
+      <div class="landing-section-heading">
+        <span class="landing-kicker">Biashara yako, kwa mtazamo mmoja</span>
+        <h2>Kila kitu muhimu.<br><span>Bila usumbufu.</span></h2>
+        <p>StockGuard inaunganisha kazi za kila siku ili uweze kutumia muda wako kukuza biashara.</p>
+      </div>
+      <div class="landing-feature-grid">
+        <article class="landing-feature-card feature-blue">
+          <span class="feature-icon">▦</span><span class="feature-number">01</span>
+          <h3>Bidhaa na stock</h3>
+          <p>Ongeza bidhaa, rekodi manunuzi na angalia kiasi kilichopo. Stock husasishwa mauzo yanapofanyika.</p>
+          <span class="feature-link">Usimamizi wa bidhaa <span aria-hidden="true">↗</span></span>
+        </article>
+        <article class="landing-feature-card feature-green">
+          <span class="feature-icon">↗</span><span class="feature-number">02</span>
+          <h3>Mauzo na mapato</h3>
+          <p>Rekodi mauzo kwa hatua chache na uone mapato ya siku pamoja na miamala ya karibuni.</p>
+          <span class="feature-link">Rekodi za mauzo <span aria-hidden="true">↗</span></span>
+        </article>
+        <article class="landing-feature-card feature-purple">
+          <span class="feature-icon">▤</span><span class="feature-number">03</span>
+          <h3>Ripoti na uchambuzi</h3>
+          <p>Linganisha mauzo ya siku na mwezi, kisha pakua ripoti ya biashara yako kama PDF.</p>
+          <span class="feature-link">Ripoti zilizo wazi <span aria-hidden="true">↗</span></span>
+        </article>
+        <article class="landing-feature-card feature-orange">
+          <span class="feature-icon">♙</span><span class="feature-number">04</span>
+          <h3>Wafanyakazi na ruhusa</h3>
+          <p>Admin, Boss na Worker hupata uwezo unaolingana na jukumu lao katika biashara.</p>
+          <span class="feature-link">Udhibiti wa akaunti <span aria-hidden="true">↗</span></span>
+        </article>
+      </div>
+    </section>
+
+    <section class="landing-workflow" id="jinsi-inavyofanya">
+      <div class="workflow-copy">
+        <span class="landing-kicker">Rahisi kuanza</span>
+        <h2>Kuanzia stock<br>hadi mauzo.</h2>
+        <p>Mtazamo unaoeleweka kwa mmiliki na timu yake. Taarifa husasishwa pamoja kila hatua inaporekodiwa.</p>
+        <a class="button button-primary" href="{% url 'login' %}">Ingia kwenye akaunti <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="workflow-steps">
+        <article><span>1</span><div><h3>Weka bidhaa</h3><p>Jaza bidhaa zako na kiasi cha stock cha kuanzia.</p></div></article>
+        <article><span>2</span><div><h3>Rekodi manunuzi na mauzo</h3><p>Stock hubadilika yenyewe kulingana na shughuli za biashara.</p></div></article>
+        <article><span>3</span><div><h3>Kagua matokeo</h3><p>Tumia dashboard na ripoti kuona mwenendo wa biashara.</p></div></article>
+      </div>
+    </section>
+
+    <section class="landing-final-cta">
+      <img src="{% static 'inventory/icons/icon.svg' %}" alt="" class="cta-shield">
+      <div><span class="landing-kicker">Anza leo</span><h2>Chukua usukani wa biashara yako.</h2><p>StockGuard—stock, mauzo na ripoti, sehemu moja.</p></div>
+      {% if admin_signup_available %}<a class="button landing-cta-light" href="{% url 'admin_signup' %}">Jisajili Admin <span aria-hidden="true">↗</span></a>{% endif %}
+      <a class="button landing-cta-light" href="{% url 'login' %}">Ingia kwenye StockGuard <span aria-hidden="true">→</span></a>
+    </section>
+  </main>
+  <footer class="landing-footer"><a class="brand landing-brand" href="{% url 'home' %}"><img class="brand-icon" src="{% static 'inventory/icons/icon.svg' %}" alt="">StockGuard</a><span>Stock na mauzo yako, sehemu moja.</span><a href="{% url 'login' %}">Ingia kwenye akaunti</a></footer>
+
+  <dialog class="install-dialog" data-install-dialog aria-labelledby="install-title">
+    <form method="dialog" class="dialog-close-form"><button class="dialog-close" aria-label="Funga maelekezo">×</button></form>
+    <img class="install-dialog-icon" src="{% static 'inventory/icons/icon.svg' %}" alt="">
+    <p class="eyebrow">StockGuard</p><h2 id="install-title">Sakinisha kwenye kifaa chako</h2>
+    <p class="muted" data-install-instructions>Fuata maelekezo ya browser yako ili kuongeza app kwenye kifaa.</p>
+    <button class="button button-primary button-wide" type="button" data-install-confirm hidden>Sakinisha sasa</button>
+    <button class="button button-secondary button-wide dialog-done" type="button" data-install-close>Sawa</button>
+  </dialog>
+</body>
+</html>

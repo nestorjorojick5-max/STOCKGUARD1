@@ -6,9 +6,9 @@
   <meta name="theme-color" content="#1d4ed8">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="NEKEZA B">
-  <script>try { if (!sessionStorage.getItem("nekezab-splash-seen")) document.documentElement.classList.add("show-splash"); } catch (_) { document.documentElement.classList.add("show-splash"); }</script>
-  <title>Ingia · NEKEZA B</title>
+  <meta name="apple-mobile-web-app-title" content="StockGuard">
+  <script>try { if (!sessionStorage.getItem("stockguard-splash-seen")) document.documentElement.classList.add("show-splash"); } catch (_) { document.documentElement.classList.add("show-splash"); }</script>
+  <title>Ingia · StockGuard</title>
   {% load static %}
   <link rel="manifest" href="{% static 'inventory/manifest.webmanifest' %}">
   <link rel="icon" href="{% static 'inventory/icons/icon.svg' %}" type="image/svg+xml">
@@ -17,10 +17,10 @@
   <script src="{% static 'inventory/js/app.js' %}" defer></script>
 </head>
 <body class="login-page">
-  <div class="splash-screen" data-splash-screen role="status" aria-live="polite" aria-label="Inapakia NEKEZA B">
+  <div class="splash-screen" data-splash-screen role="status" aria-live="polite" aria-label="Inapakia StockGuard">
     <div class="splash-orb splash-orb-one"></div><div class="splash-orb splash-orb-two"></div>
     <div class="splash-content">
-      <div class="splash-logo"><span>NEKEZA</span><span class="splash-brand-mark">B</span></div>
+      <div class="splash-logo"><img src="{% static 'inventory/icons/icon.svg' %}" alt=""><span>StockGuard</span></div>
       <p class="splash-tagline">STOCK <span>·</span> SALES <span>·</span> GROWTH</p>
       <div class="splash-loader" aria-hidden="true"><span></span></div>
       <p class="splash-message" data-splash-message>Tunaandaa biashara yako...</p>
@@ -29,7 +29,7 @@
   </div>
   <main class="login-card">
     <div class="login-topline">
-      <a class="brand login-brand" href="{% url 'login' %}">NEKEZA <span class="brand-mark">B</span></a>
+      <a class="brand login-brand" href="{% url 'home' %}"><img class="brand-icon" src="{% static 'inventory/icons/icon.svg' %}" alt="">StockGuard</a>
       <div class="login-options">
         <div class="language-switch" role="group" aria-label="Chagua lugha">
           <button type="button" data-language-option="sw" aria-label="Kiswahili">SW</button>
@@ -56,8 +56,8 @@
   </main>
   <dialog class="install-dialog" data-install-dialog aria-labelledby="install-title">
     <form method="dialog" class="dialog-close-form"><button class="dialog-close" aria-label="Funga maelekezo">×</button></form>
-    <div class="install-dialog-icon">B</div>
-    <p class="eyebrow">NEKEZA B · StockGuard</p>
+    <img class="install-dialog-icon" src="{% static 'inventory/icons/icon.svg' %}" alt="">
+    <p class="eyebrow">StockGuard</p>
     <h2 id="install-title">Sakinisha kwenye kifaa chako</h2>
     <p class="muted" data-install-instructions>Fuata maelekezo ya browser yako ili kuongeza app kwenye kifaa.</p>
     <button class="button button-primary button-wide" type="button" data-install-confirm hidden>Sakinisha sasa</button>

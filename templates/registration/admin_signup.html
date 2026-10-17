@@ -1,0 +1,33 @@
+{% extends "registration/password_reset_base.html" %}
+{% block title %}Jisajili Admin{% endblock %}
+{% block content %}
+{% if signup_unavailable %}
+  <p class="eyebrow">Usajili wa Admin</p>
+  <h1>Usajili haujawashwa</h1>
+  <p class="muted">Mmiliki wa mfumo anahitaji kuwasha usajili wa Admin kwanza.</p>
+  <a class="button button-primary button-wide" href="{% url 'home' %}">Rudi StockGuard</a>
+{% elif signup_closed %}
+  <p class="eyebrow">Usajili wa Admin</p>
+  <h1>Usajili umefungwa</h1>
+  <p class="muted">Akaunti ya kwanza ya Admin tayari imetengenezwa. Admin anaweza kusajili Maboss kupitia dashboard.</p>
+  <a class="button button-primary button-wide" href="{% url 'login' %}">Ingia kwenye akaunti</a>
+{% else %}
+  <p class="eyebrow">Usajili wa kwanza tu</p>
+  <h1>Jisajili kama Admin</h1>
+  <p class="muted">Akaunti hii itasimamia mfumo mzima na kusajili Maboss wa biashara.</p>
+  {% if form.non_field_errors %}<div class="notice notice-error">{{ form.non_field_errors }}</div>{% endif %}
+  <form method="post" class="form-stack">
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="field">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+        {% if field.name == "setup_key" %}<small class="muted">Ufunguo huu unatolewa na mmiliki wa mfumo. Usishiriki na mtu mwingine.</small>{% endif %}
+      </div>
+    {% endfor %}
+    <button class="button button-primary button-wide" type="submit">Tengeneza akaunti ya Admin</button>
+  </form>
+  <a class="forgot-link" href="{% url 'login' %}">Tayari una akaunti? Ingia</a>
+{% endif %}
+{% endblock %}

@@ -1,4 +1,4 @@
-# NEKEZA B · StockGuard
+# StockGuard
 
 Mfumo wa Django wa kusimamia bidhaa, stock, mauzo na watumiaji kwa simu na kompyuta. Lugha ya kiolesura ni Kiswahili.
 
@@ -9,9 +9,10 @@ Mfumo wa Django wa kusimamia bidhaa, stock, mauzo na watumiaji kwa simu na kompy
 - Boss anaweza kuongeza bidhaa na kurekodi manunuzi yanayoongeza stock pamoja na gharama.
 - Mauzo huhifadhi bei ya wakati wa mauzo na hupunguza stock kiotomatiki ndani ya database transaction.
 - Ripoti za siku na mwezi zina jumla ya mauzo na zinaweza kupakuliwa kama PDF.
-- NEKEZA B inaweza kusakinishwa kwenye simu/PC kupitia browser inayotumika, na mwonekano wa mwanga/giza huhifadhiwa kwenye kifaa.
+- StockGuard inaweza kusakinishwa kwenye simu/PC kupitia browser inayotumika, na mwonekano wa mwanga/giza huhifadhiwa kwenye kifaa.
 - Interface inaweza kubadilishwa kati ya Kiswahili na English kwa vitufe vya SW/EN; chaguo huhifadhiwa kwenye kifaa.
 - “Umesahau nenosiri?” hutuma link ya kubadilisha nenosiri kwenye email. Link hutumika mara moja na huisha baada ya saa moja.
+- Ukurasa wa mwanzo unaeleza huduma za StockGuard; akaunti ya Admin ya kwanza inaweza kujisajili kwa ufunguo wa siri wa usanidi, kisha usajili wa kwanza hufungwa.
 - Django hutumia SQLite kwa maendeleo ya ndani; Supabase PostgreSQL hutumika ukiweka `DATABASE_URL`.
 
 ## Kuendesha kwa ndani
@@ -52,8 +53,8 @@ Tengeneza database kwenye Supabase, kisha weka connection string yake kwenye `DA
 1. Hakikisha project imepushiwa kwenye GitHub, kisha Render Dashboard → **New** → **Blueprint** na chagua repository hii. Render itasoma `render.yaml` na kuunda web service.
 2. Render itaomba `DATABASE_URL` wakati wa kuunda Blueprint. Weka connection string ya PostgreSQL ya Supabase; tumia **Session Pooler** na hakikisha URL ina SSL. `SECRET_KEY` inazalishwa na Render na `DEBUG=False` imewekwa kwa production.
 3. Bonyeza **Apply**. Build itaweka dependencies na kukusanya static files; service itafanya migrations kisha iwake. Fungua domain ya `onrender.com` inayoonekana kwenye service.
-4. Kwa kutuma password-reset email, fungua service → **Environment** na weka `EMAIL_HOST_USER` kuwa `nestorjorojick5@gmail.com`, `EMAIL_HOST_PASSWORD` kuwa Gmail App Password, na `DEFAULT_FROM_EMAIL` kuwa `NEKEZA B <nestorjorojick5@gmail.com>`. Tumia App Password, si nenosiri la kawaida la Gmail. Usiiweke kwenye Git wala kuituma kwenye chat; Render huihifadhi kama environment secret.
-5. Tengeneza Admin wa kwanza kupitia **Shell** ya web service kwa kuendesha `python manage.py createsuperuser`. Ikiwa plan yako haina Shell, endesha `.\.venv\Scripts\python.exe manage.py createsuperuser` kwenye kompyuta yako, ukiwa na `DATABASE_URL` ya Supabase kwenye `.env`. Kisha ingia kwenye `/django-admin/` kwa domain ya Render na uanze kusajili Maboss.
+4. Kwa kutuma password-reset email, fungua service → **Environment** na weka `EMAIL_HOST_USER` kuwa `nestorjorojick5@gmail.com`, `EMAIL_HOST_PASSWORD` kuwa Gmail App Password, na `DEFAULT_FROM_EMAIL` kuwa `StockGuard <nestorjorojick5@gmail.com>`. Tumia App Password, si nenosiri la kawaida la Gmail. Usiiweke kwenye Git wala kuituma kwenye chat; Render huihifadhi kama environment secret.
+5. Kwa kujisajili Admin wa kwanza kwenye ukurasa wa mwanzo, tengeneza `ADMIN_SIGNUP_KEY` ndefu na ya kubahatisha, iweke kwenye **Environment** ya Render, kisha fungua **Manual Deploy → Deploy latest commit**. Tembelea domain ya tovuti, chagua **Jisajili Admin**, na tumia ufunguo huo. Usishiriki ufunguo huo hadharani. Usajili hujifunga baada ya Admin wa kwanza kuundwa; kisha futa `ADMIN_SIGNUP_KEY` kwenye Environment ya Render na redeploy. Admin huyo anaweza kusajili Maboss kutoka dashboard.
 
 `DATABASE_URL` ni lazima kwenye production; app itakataa kuwaka ikiwa haijawekwa ili isitumie SQLite ya muda ya Render. Kila kuanza service huendesha migrations moja kwa moja. Tumia GitHub repository ya private ikiwa hutaki code yako ionekane hadharani.
 

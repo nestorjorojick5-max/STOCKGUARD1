@@ -9,6 +9,7 @@ load_dotenv(BASE_DIR / ".env")
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "development-only-change-me")
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
+ADMIN_SIGNUP_KEY = os.environ.get("ADMIN_SIGNUP_KEY", "")
 ALLOWED_HOSTS = [
     host.strip()
     for host in os.environ.get("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
@@ -32,7 +33,7 @@ EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True").lower() == "true"
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 DEFAULT_FROM_EMAIL = os.environ.get(
-    "DEFAULT_FROM_EMAIL", EMAIL_HOST_USER or "NEKEZA B <noreply@example.com>"
+    "DEFAULT_FROM_EMAIL", EMAIL_HOST_USER or "StockGuard <noreply@example.com>"
 )
 EMAIL_BACKEND = os.environ.get(
     "EMAIL_BACKEND",

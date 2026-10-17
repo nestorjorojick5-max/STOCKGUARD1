@@ -1,10 +1,10 @@
 {
   "id": "/",
-  "name": "NEKEZA B - StockGuard",
-  "short_name": "NEKEZA B",
+  "name": "StockGuard",
+  "short_name": "StockGuard",
   "description": "Simamia bidhaa, stock na mauzo ya biashara yako.",
   "lang": "sw",
-  "start_url": "/dashboard/",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui"],

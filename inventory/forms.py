@@ -1,5 +1,8 @@
+import secrets
+
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm
+from django.conf import settings
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.password_validation import validate_password
 from django.utils import timezone
 
@@ -27,6 +30,56 @@ class LoginForm(AuthenticationForm):
                 "Muda wa PIN umeisha. Tafadhali wasiliana na msimamizi wako.",
                 code="expired_credential",
             )
+
+
+class AdminSignupForm(UserCreationForm):
+    password1 = forms.CharField(
+        label="Nenosiri",
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+    )
+    password2 = forms.CharField(
+        label="Thibitisha nenosiri",
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+    )
+    email = forms.EmailField(
+        label="Anwani ya barua pepe",
+        widget=forms.EmailInput(attrs={"autocomplete": "email"}),
+    )
+    setup_key = forms.CharField(
+        label="Ufunguo wa usajili",
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autocomplete": "off"}),
+    )
+
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ("username", "email")
+
+    def clean_email(self):
+        email = self.cleaned_data["email"].strip().lower()
+        if User.objects.filter(email__iexact=email).exists():
+            raise forms.ValidationError("Barua pepe hii tayari inatumika.")
+        return email
+
+    def clean_setup_key(self):
+        supplied_key = self.cleaned_data["setup_key"]
+        expected_key = settings.ADMIN_SIGNUP_KEY.strip()
+        if not expected_key or not secrets.compare_digest(supplied_key, expected_key):
+            raise forms.ValidationError("Ufunguo wa usajili si sahihi.")
+        return supplied_key
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data["email"]
+        user.role = User.Role.ADMIN
+        user.is_staff = True
+        user.is_superuser = True
+        if commit:
+            user.save()
+            self.save_m2m()
+        return user
 
 
 class ProductForm(forms.ModelForm):

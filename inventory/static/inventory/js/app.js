@@ -10,7 +10,7 @@
     "Chagua lugha": "Choose language",
     "Fungua menyu": "Open menu",
     "Funga menyu": "Close menu",
-    "NEKEZA B": "NEKEZA B",
+    "StockGuard": "StockGuard",
     "Mwanga": "Light",
     "Giza": "Dark",
     "Mwonekano": "Theme",
@@ -35,6 +35,8 @@
     "Ingia kusimamia bidhaa, stock na mauzo.": "Sign in to manage products, stock, and sales.",
     "Jina la mtumiaji": "Username",
     "PIN / Nenosiri": "PIN / Password",
+    "Nenosiri": "Password",
+    "Thibitisha nenosiri": "Confirm password",
     "Ingia kwenye akaunti": "Sign in",
     "PIN imeisha muda? Wasiliana na Boss au Admin wako ili akubadilishie.": "Has your PIN expired? Contact your Boss or Admin to reset it.",
     "Umesahau nenosiri? Tuma link ya kulibadilisha kwa email": "Forgot your password? Email me a reset link",
@@ -154,9 +156,9 @@
     "STOCK": "STOCK",
     "SALES": "SALES",
     "GROWTH": "GROWTH",
-    "Inapakia NEKEZA B": "Loading NEKEZA B",
+    "Inapakia StockGuard": "Loading StockGuard",
     "Tunaandaa biashara yako...": "Preparing your business...",
-    "NEKEZA B · Stock na mauzo yako, sehemu moja.": "NEKEZA B · Your stock and sales, all in one place.",
+    "StockGuard · Stock na mauzo yako, sehemu moja.": "StockGuard · Your stock and sales, all in one place.",
     "Rejesha akaunti yako": "Recover your account",
     "Umesahau nenosiri?": "Forgot your password?",
     "Weka email iliyosajiliwa. Tutakutumia link ya kubadilisha nenosiri.": "Enter your registered email and we will send you a password reset link.",
@@ -175,10 +177,10 @@
     "Nenosiri limebadilishwa": "Password changed",
     "Sasa unaweza kuingia kwa kutumia nenosiri lako jipya.": "You can now sign in with your new password.",
     "Ingia kwenye akaunti": "Sign in",
-    "Kuhusu NEKEZA B": "About NEKEZA B",
+    "Kuhusu StockGuard": "About StockGuard",
     "Wasiliana na msimamizi": "Contact the administrator",
     "Stock na mauzo yako, sehemu moja.": "Your stock and sales, all in one place.",
-    "NEKEZA B ni mfumo wa kusimamia bidhaa, kurekodi manunuzi na mauzo, na kufuatilia mapato ya biashara.": "NEKEZA B helps you manage products, record purchases and sales, and track business revenue.",
+    "StockGuard ni mfumo wa kusimamia bidhaa, kurekodi manunuzi na mauzo, na kufuatilia mapato ya biashara.": "StockGuard helps you manage products, record purchases and sales, and track business revenue.",
     "Stock hupungua kiotomatiki mauzo yanapohifadhiwa.": "Stock decreases automatically when a sale is saved.",
     "Ripoti za mauzo ya siku na mwezi zinapatikana kama PDF.": "Daily and monthly sales reports are available as PDFs.",
     "Admin, Boss na Worker wana ruhusa tofauti.": "Admins, Bosses, and Workers have different permissions.",
@@ -194,7 +196,74 @@
     "Kwenye Safari, gusa kitufe cha Share (mraba wenye mshale juu), telezesha menyu kisha chagua “Add to Home Screen” / “Ongeza kwenye Skrini ya Mwanzo”.": "In Safari, tap Share (the square with an up arrow), scroll the menu, then tap “Add to Home Screen”.",
     "Kwenye Chrome, gusa menyu ya nukta tatu (⋮) kisha chagua “Install app” au “Add to Home screen”.": "In Chrome, tap the three-dot menu (⋮), then choose “Install app” or “Add to Home screen”.",
     "Kwenye Safari ya Mac, fungua Share kisha chagua “Add to Dock”.": "In Safari on Mac, open Share and choose “Add to Dock”.",
-    "Kwenye Chrome au Edge, fungua menyu ya browser kisha chagua “Install NEKEZA B” au “Install this site as an app”. Unaweza pia kutumia alama ya install iliyo karibu na anwani ya tovuti.": "In Chrome or Edge, open the browser menu and choose “Install NEKEZA B” or “Install this site as an app”. You can also use the install icon beside the address bar.",
+    "Kwenye Chrome au Edge, fungua menyu ya browser kisha chagua “Install StockGuard” au “Install this site as an app”. Unaweza pia kutumia alama ya install iliyo karibu na anwani ya tovuti.": "In Chrome or Edge, open the browser menu and choose “Install StockGuard” or “Install this site as an app”. You can also use the install icon beside the address bar.",
+    "Vipengele": "Features",
+    "Jinsi inavyofanya kazi": "How it works",
+    "Jisajili Admin": "Register as Admin",
+    "Usimamizi wa biashara, rahisi zaidi": "Simpler business management",
+    "Biashara yako.": "Your business.",
+    "Udhibiti wako.": "Your control.",
+    "Simamia bidhaa, fuatilia stock, rekodi mauzo na elewa mapato yako—vyote sehemu moja, kwenye simu au kompyuta.": "Manage products, track stock, record sales, and understand your revenue—all in one place, on phone or computer.",
+    "Anza kusimamia biashara": "Start managing your business",
+    "Gundua StockGuard": "Discover StockGuard",
+    "Salama · Rahisi kutumia · Tayari kwa simu": "Secure · Easy to use · Mobile ready",
+    "Mchoro wa dashboard ya StockGuard": "StockGuard dashboard illustration",
+    "Mchoro wa dashboard inayoonyesha bidhaa, stock, mauzo na ngao ya ulinzi wa mapato": "Dashboard illustration showing products, stock, sales, and a shield protecting revenue",
+    "Stock inadhibitiwa": "Stock under control",
+    "Hali ya bidhaa kwa wakati": "Product status at a glance",
+    "Mauzo yanafuatiliwa": "Sales tracked",
+    "Ripoti zinazoeleweka": "Clear reports",
+    "Faida za StockGuard": "StockGuard benefits",
+    "Usikose bidhaa zinazoisha": "Know when stock is running low",
+    "Rekodi mauzo kwa urahisi": "Record sales with ease",
+    "Fanya maamuzi kwa taarifa": "Make informed decisions",
+    "Biashara yako, kwa mtazamo mmoja": "Your business, at a glance",
+    "Kila kitu muhimu.": "Everything that matters.",
+    "Bila usumbufu.": "Without the hassle.",
+    "StockGuard inaunganisha kazi za kila siku ili uweze kutumia muda wako kukuza biashara.": "StockGuard brings daily work together so you can focus on growing your business.",
+    "Bidhaa na stock": "Products and stock",
+    "Ongeza bidhaa, rekodi manunuzi na angalia kiasi kilichopo. Stock husasishwa mauzo yanapofanyika.": "Add products, record purchases, and check available quantities. Stock updates when sales are recorded.",
+    "Usimamizi wa bidhaa": "Product management",
+    "Mauzo na mapato": "Sales and revenue",
+    "Rekodi mauzo kwa hatua chache na uone mapato ya siku pamoja na miamala ya karibuni.": "Record sales in a few steps and see daily revenue and recent transactions.",
+    "Rekodi za mauzo": "Sales records",
+    "Ripoti na uchambuzi": "Reports and insights",
+    "Linganisha mauzo ya siku na mwezi, kisha pakua ripoti ya biashara yako kama PDF.": "Compare daily and monthly sales, then download your business report as a PDF.",
+    "Ripoti zilizo wazi": "Clear reports",
+    "Wafanyakazi na ruhusa": "Staff and permissions",
+    "Admin, Boss na Worker hupata uwezo unaolingana na jukumu lao katika biashara.": "Admins, Bosses, and Workers get access suited to their role in the business.",
+    "Udhibiti wa akaunti": "Account control",
+    "Rahisi kuanza": "Easy to get started",
+    "Kuanzia stock": "From stock",
+    "hadi mauzo.": "to sales.",
+    "Mtazamo unaoeleweka kwa mmiliki na timu yake. Taarifa husasishwa pamoja kila hatua inaporekodiwa.": "A clear view for the owner and team. Information stays in sync as each activity is recorded.",
+    "Weka bidhaa": "Add products",
+    "Jaza bidhaa zako na kiasi cha stock cha kuanzia.": "Enter your products and opening stock quantities.",
+    "Rekodi manunuzi na mauzo": "Record purchases and sales",
+    "Stock hubadilika yenyewe kulingana na shughuli za biashara.": "Stock updates automatically as business activity is recorded.",
+    "Kagua matokeo": "Review results",
+    "Tumia dashboard na ripoti kuona mwenendo wa biashara.": "Use the dashboard and reports to see how your business is doing.",
+    "Anza leo": "Get started today",
+    "Chukua usukani wa biashara yako.": "Take control of your business.",
+    "StockGuard—stock, mauzo na ripoti, sehemu moja.": "StockGuard—stock, sales, and reports, all in one place.",
+    "Ingia kwenye StockGuard": "Sign in to StockGuard",
+    "Ingia kwenye akaunti": "Sign in to your account",
+    "Jisajili kama Admin": "Register as Admin",
+    "Usajili wa Admin": "Admin registration",
+    "Usajili haujawashwa": "Admin registration is not enabled",
+    "Mmiliki wa mfumo anahitaji kuwasha usajili wa Admin kwanza.": "The system owner must enable Admin registration first.",
+    "Rudi StockGuard": "Back to StockGuard",
+    "Usajili umefungwa": "Registration is closed",
+    "Akaunti ya kwanza ya Admin tayari imetengenezwa. Admin anaweza kusajili Maboss kupitia dashboard.": "The first Admin account has already been created. Admins can register Bosses from the dashboard.",
+    "Tayari una akaunti? Ingia": "Already have an account? Sign in",
+    "Usajili wa kwanza tu": "First registration only",
+    "Jisajili kama Admin": "Register as Admin",
+    "Akaunti hii itasimamia mfumo mzima na kusajili Maboss wa biashara.": "This account manages the entire system and registers business Bosses.",
+    "Ufunguo wa usajili": "Registration key",
+    "Ufunguo huu unatolewa na mmiliki wa mfumo. Usishiriki na mtu mwingine.": "This key is provided by the system owner. Do not share it.",
+    "Tengeneza akaunti ya Admin": "Create Admin account",
+    "Ufunguo wa usajili si sahihi.": "The registration key is incorrect.",
+    "Akaunti ya Admin imetengenezwa.": "The Admin account has been created.",
     "Umetengeneza PIN mpya kwa ": "Reset the PIN for ",
     "? PIN ya sasa haitafanya kazi.": "? The current PIN will stop working.",
     "Unataka kubadilisha hali ya akaunti ya ": "Change the account status for ",
@@ -291,20 +360,20 @@
     const splashMessage = document.querySelector("[data-splash-message]");
     if (splash && root.classList.contains("show-splash")) {
       try {
-        sessionStorage.setItem("nekezab-splash-seen", "true");
+        sessionStorage.setItem("stockguard-splash-seen", "true");
       } catch (error) {
-        console.warn("NEKEZA B could not save the splash-screen session:", error);
+        console.warn("StockGuard could not save the splash-screen session:", error);
       }
       const splashMessages = {
         sw: [
           "Tunaandaa biashara yako...",
           "Tunasawazisha stock na mauzo...",
-          "Karibu NEKEZA B!",
+          "Karibu StockGuard!",
         ],
         en: [
           "Preparing your business...",
           "Getting stock and sales ready...",
-          "Welcome to NEKEZA B!",
+          "Welcome to StockGuard!",
         ],
       };
       let messageIndex = 0;
@@ -348,14 +417,14 @@
   try {
     savedTheme = localStorage.getItem(themeKey);
   } catch (error) {
-    console.warn("NEKEZA B could not read the saved theme preference:", error);
+    console.warn("StockGuard could not read the saved theme preference:", error);
   }
   applyTheme(savedTheme === "light" || savedTheme === "dark" ? savedTheme : (systemDark.matches ? "dark" : "light"));
   let savedLanguage = null;
   try {
     savedLanguage = localStorage.getItem(languageKey);
   } catch (error) {
-    console.warn("NEKEZA B could not read the saved language preference:", error);
+    console.warn("StockGuard could not read the saved language preference:", error);
   }
   applyLanguage(savedLanguage === "en" ? "en" : "sw");
   languageButtons.forEach((button) => {
@@ -364,7 +433,7 @@
       try {
         localStorage.setItem(languageKey, language);
       } catch (error) {
-        console.warn("NEKEZA B could not save the language preference:", error);
+        console.warn("StockGuard could not save the language preference:", error);
       }
       applyLanguage(language);
     });
@@ -378,7 +447,7 @@
       try {
         localStorage.setItem(themeKey, theme);
       } catch (error) {
-        console.warn("NEKEZA B could not save the theme preference:", error);
+        console.warn("StockGuard could not save the theme preference:", error);
       }
     });
   });
@@ -444,8 +513,8 @@
     if (deferredInstallPrompt) {
       confirmInstall.hidden = false;
       installInstructions.textContent = currentLanguage === "en"
-        ? "Install NEKEZA B as an app on this device."
-        : "Sakinisha NEKEZA B kama app kwenye kifaa hiki.";
+        ? "Install StockGuard as an app on this device."
+        : "Sakinisha StockGuard kama app kwenye kifaa hiki.";
     } else {
       confirmInstall.hidden = true;
       if (currentLanguage === "en") {
@@ -456,7 +525,7 @@
         } else if (isMacSafari) {
           installInstructions.textContent = english["Kwenye Safari ya Mac, fungua Share kisha chagua “Add to Dock”."];
         } else {
-          installInstructions.textContent = english["Kwenye Chrome au Edge, fungua menyu ya browser kisha chagua “Install NEKEZA B” au “Install this site as an app”. Unaweza pia kutumia alama ya install iliyo karibu na anwani ya tovuti."];
+          installInstructions.textContent =           english["Kwenye Chrome au Edge, fungua menyu ya browser kisha chagua “Install StockGuard” au “Install this site as an app”. Unaweza pia kutumia alama ya install iliyo karibu na anwani ya tovuti."];
         }
       } else if (isIOS) {
         installInstructions.textContent = "Kwenye Safari, gusa kitufe cha Share (mraba wenye mshale juu), telezesha menyu kisha chagua “Add to Home Screen” / “Ongeza kwenye Skrini ya Mwanzo”.";
@@ -465,7 +534,7 @@
       } else if (isMacSafari) {
         installInstructions.textContent = "Kwenye Safari ya Mac, fungua Share kisha chagua “Add to Dock”.";
       } else {
-        installInstructions.textContent = "Kwenye Chrome au Edge, fungua menyu ya browser kisha chagua “Install NEKEZA B” au “Install this site as an app”. Unaweza pia kutumia alama ya install iliyo karibu na anwani ya tovuti.";
+        installInstructions.textContent = "Kwenye Chrome au Edge, fungua menyu ya browser kisha chagua “Install StockGuard” au “Install this site as an app”. Unaweza pia kutumia alama ya install iliyo karibu na anwani ya tovuti.";
       }
     }
 
@@ -487,7 +556,7 @@
   if ("serviceWorker" in navigator && window.isSecureContext) {
     window.addEventListener("load", () => {
       navigator.serviceWorker.register("/service-worker.js").catch((error) => {
-        console.error("NEKEZA B service worker registration failed:", error);
+        console.error("StockGuard service worker registration failed:", error);
       });
     });
   }

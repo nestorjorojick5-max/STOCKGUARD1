@@ -5,7 +5,9 @@ from decimal import Decimal
 from io import BytesIO
 from pathlib import Path
 
+from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import login as auth_login
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView as DjangoLoginView
@@ -25,6 +27,7 @@ from reportlab.platypus import SimpleDocTemplate, Spacer, Table, TableStyle, Par
 from .forms import (
     ChangeEmailForm,
     ChangePasswordForm,
+    AdminSignupForm,
     LoginForm,
     ManagedUserForm,
     ProductForm,
@@ -59,7 +62,48 @@ class BilingualPasswordResetView(DjangoPasswordResetView):
 def home(request):
     if request.user.is_authenticated:
         return redirect("dashboard")
-    return redirect("login")
+    admin_signup_available = bool(settings.ADMIN_SIGNUP_KEY.strip()) and not (
+        User.objects.filter(role=User.Role.ADMIN).exists()
+    )
+    return render(
+        request,
+        "inventory/landing.html",
+        {"admin_signup_available": admin_signup_available},
+    )
+
+
+def admin_signup(request):
+    signup_key = settings.ADMIN_SIGNUP_KEY.strip()
+    if not signup_key:
+        return render(
+            request,
+            "registration/admin_signup.html",
+            {"signup_unavailable": True},
+            status=404,
+        )
+    if User.objects.filter(role=User.Role.ADMIN).exists():
+        return render(
+            request,
+            "registration/admin_signup.html",
+            {"signup_closed": True},
+            status=410,
+        )
+
+    form = AdminSignupForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        with transaction.atomic():
+            if User.objects.filter(role=User.Role.ADMIN).exists():
+                return render(
+                    request,
+                    "registration/admin_signup.html",
+                    {"signup_closed": True},
+                    status=410,
+                )
+            admin = form.save()
+            auth_login(request, admin)
+        messages.success(request, "Akaunti ya Admin imetengenezwa.")
+        return redirect("dashboard")
+    return render(request, "registration/admin_signup.html", {"form": form})
 
 
 def service_worker(request):
@@ -347,9 +391,9 @@ def report_pdf(request):
     document.build(
         [
             Paragraph(
-                "NEKEZA B — Sales report"
+                "StockGuard — Sales report"
                 if english_report
-                else "NEKEZA B — Ripoti ya mauzo",
+                else "StockGuard — Ripoti ya mauzo",
                 styles["Title"],
             ),
             Paragraph(f"{organization.username} · {label}", styles["Normal"]),
@@ -493,7 +537,7 @@ def settings_page(request):
 
 @login_required
 def about(request):
-    return render(request, "inventory/info.html", {"title": "Kuhusu NEKEZA B"})
+    return render(request, "inventory/info.html", {"title": "Kuhusu StockGuard"})
 
 
 @login_required

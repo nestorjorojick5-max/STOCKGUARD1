@@ -15,10 +15,10 @@ class UserAdmin(DjangoUserAdmin):
     )
     list_filter = ("role", "is_active")
     fieldsets = DjangoUserAdmin.fieldsets + (
-        ("NEKEZA B", {"fields": ("role", "organization", "credential_expires_at")}),
+        ("StockGuard", {"fields": ("role", "organization", "credential_expires_at")}),
     )
     add_fieldsets = DjangoUserAdmin.add_fieldsets + (
-        ("NEKEZA B", {"fields": ("role", "organization")}),
+        ("StockGuard", {"fields": ("role", "organization")}),
     )
 
 

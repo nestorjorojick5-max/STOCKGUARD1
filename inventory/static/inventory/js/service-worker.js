@@ -1,4 +1,4 @@
-const CACHE_NAME = "nekezab-shell-v3";
+const CACHE_NAME = "stockguard-shell-v4";
 const APP_SHELL = [
   "/static/inventory/css/app.css",
   "/static/inventory/js/app.js",
@@ -6,6 +6,7 @@ const APP_SHELL = [
   "/static/inventory/icons/icon.svg",
   "/static/inventory/icons/icon-192.png",
   "/static/inventory/icons/icon-512.png",
+  "/static/inventory/images/stockguard-dashboard.svg",
   "/static/inventory/offline.html",
 ];
 

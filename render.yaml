@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: nekezab-stockguard
+    name: stockguard
     runtime: python
     buildCommand: pip install -r requirements.txt && python manage.py collectstatic --no-input
     startCommand: python manage.py migrate --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
@@ -14,9 +14,11 @@ services:
         generateValue: true
       - key: DATABASE_URL
         sync: false
+      - key: ADMIN_SIGNUP_KEY
+        sync: false
       - key: EMAIL_HOST_USER
         sync: false
       - key: EMAIL_HOST_PASSWORD
         sync: false
       - key: DEFAULT_FROM_EMAIL
-        value: NEKEZA B <nestorjorojick5@gmail.com>
+        value: StockGuard <nestorjorojick5@gmail.com>

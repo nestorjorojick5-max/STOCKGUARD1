@@ -31,6 +31,87 @@ class StockGuardWorkflowTests(TestCase):
             low_stock_threshold=2,
         )
 
+    def test_public_home_explains_stockguard_and_has_login_link(self):
+        response = self.client.get(reverse("home"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "StockGuard")
+        self.assertContains(response, "Bidhaa")
+        self.assertContains(response, reverse("login"))
+
+    @override_settings(ADMIN_SIGNUP_KEY="test-first-admin-key")
+    def test_public_home_only_offers_admin_signup_before_first_admin(self):
+        response = self.client.get(reverse("home"))
+
+        self.assertContains(response, reverse("admin_signup"))
+        User.objects.create_superuser(
+            username="existingadmin", email="admin@example.com", password="AdminPass123!"
+        )
+
+        response = self.client.get(reverse("home"))
+
+        self.assertNotContains(response, reverse("admin_signup"))
+
+    @override_settings(ADMIN_SIGNUP_KEY="test-first-admin-key")
+    def test_first_admin_can_register_with_setup_key(self):
+        response = self.client.post(
+            reverse("admin_signup"),
+            {
+                "username": "firstadmin",
+                "email": "firstadmin@example.com",
+                "setup_key": "test-first-admin-key",
+                "password1": "W7!qL4z#vX2@bN9",
+                "password2": "W7!qL4z#vX2@bN9",
+            },
+        )
+
+        admin = User.objects.get(username="firstadmin")
+        self.assertRedirects(response, reverse("dashboard"))
+        self.assertEqual(admin.role, User.Role.ADMIN)
+        self.assertTrue(admin.is_staff)
+        self.assertTrue(admin.is_superuser)
+        self.assertTrue(self.client.session.get("_auth_user_id"))
+
+    @override_settings(ADMIN_SIGNUP_KEY="test-first-admin-key")
+    def test_first_admin_registration_rejects_incorrect_setup_key(self):
+        response = self.client.post(
+            reverse("admin_signup"),
+            {
+                "username": "attacker",
+                "email": "attacker@example.com",
+                "setup_key": "wrong-key",
+                "password1": "W7!qL4z#vX2@bN9",
+                "password2": "W7!qL4z#vX2@bN9",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(User.objects.filter(username="attacker").exists())
+        self.assertContains(response, "Ufunguo wa usajili si sahihi.")
+
+    @override_settings(ADMIN_SIGNUP_KEY="test-first-admin-key")
+    def test_admin_registration_closes_after_first_admin_exists(self):
+        User.objects.create_superuser(
+            username="existingadmin", email="admin@example.com", password="AdminPass123!"
+        )
+
+        response = self.client.get(reverse("admin_signup"))
+
+        self.assertEqual(response.status_code, 410)
+
+    @override_settings(ADMIN_SIGNUP_KEY="")
+    def test_admin_registration_requires_setup_key(self):
+        response = self.client.get(reverse("admin_signup"))
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_authenticated_home_redirects_to_dashboard(self):
+        self.client.force_login(self.worker)
+
+        response = self.client.get(reverse("home"))
+
+        self.assertRedirects(response, reverse("dashboard"))
+
     def test_sale_reduces_inventory_and_uses_current_selling_price(self):
         self.client.force_login(self.worker)
         response = self.client.post(
